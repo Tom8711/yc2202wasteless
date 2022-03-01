@@ -17,7 +17,6 @@ public class Item {
 	private String name;
 	private LocalDate expirationDate;
 	private int amount;
-	private String weight;
 	//note foto moet uiteindelijk een blob worden om goed opgeslagen te worden
 	private String photo;
 	private boolean offered;
@@ -56,12 +55,6 @@ public class Item {
 	}
 	public void setAmount(int amount) {
 		this.amount = amount;
-	}
-	public String getWeightt() {
-		return weight;
-	}
-	public void setWeight(String gewicht) {
-		this.weight = gewicht;
 	}
 	public String getPhoto() {
 		return photo;
