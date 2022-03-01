@@ -1,5 +1,6 @@
 package nl.yc2202.Wasteless.rest;
 
+import java.io.Console;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,11 @@ public class ItemEndpoint {
 	}
 	
 	
-	@PostMapping("/createitem")
-	public void createItem(@RequestBody Item item, User userid) {
-		is.CreateItem(item);
+	@PostMapping("/createitem/{variable}")
+	public void createItem(@RequestBody Item item, @PathVariable("variable") long userid) {
+			System.out.println(item);
+			System.out.println(userid);
+			is.CreateItem(item, userid);
 	}
 
 	@DeleteMapping("/deleteitem/{variable}")
