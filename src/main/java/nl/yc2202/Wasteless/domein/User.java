@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User {
 	
@@ -24,6 +26,7 @@ public class User {
 	@OneToOne()
 	private Claim claim;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Item> items;
 	
