@@ -17,7 +17,8 @@ public class ItemService {
 	@Autowired
 	ItemRepository ir;
 	
-	UserService us;
+	@Autowired
+	UserRepository us;
 	
 	
 	public Iterable<Item> getAllItems() {
@@ -25,12 +26,14 @@ public class ItemService {
 	}
 	
 	public void CreateItem(Item item, long userId) {
-		ir.save(item);
-		Optional<User> optinalEntity =  us.FindUserById(userId);
-		User userEntity = optinalEntity.get();
-		List<Item> excistingItems = userEntity.getItems();
-		excistingItems.add(item);
-		userEntity.setItems(excistingItems);
+		
+		Optional<User> optionalUser =  us.findById(userId);
+		
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			item.setUser(userEntity);
+			ir.save(item);
+		}
 	}
 	
 	public void DeleteItem(long id) {

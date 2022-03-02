@@ -24,7 +24,7 @@ public class User {
 	@OneToOne()
 	private Claim claim;
 	
-	@OneToMany()
+	@OneToMany(mappedBy = "user")
 	private List<Item> items;
 	
 	public long getId() {
