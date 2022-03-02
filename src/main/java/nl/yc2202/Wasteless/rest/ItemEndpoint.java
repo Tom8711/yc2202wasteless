@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.domein.User;
+import nl.yc2202.Wasteless.dto.CreateItemDto;
 import nl.yc2202.Wasteless.persistence.ItemService;
 
 
@@ -39,11 +40,9 @@ public class ItemEndpoint {
 	}
 	
 	
-	@PostMapping("/createitem/{variable}")
-	public void createItem(@RequestBody Item item, @PathVariable("variable") long userid) {
-			System.out.println(item);
-			System.out.println(userid);
-			is.CreateItem(item, userid);
+	@PostMapping("/createitem")
+	public void createItem(@RequestBody CreateItemDto createItemDto) {
+			is.CreateItem(createItemDto.getItem(), createItemDto.getUserId());
 	}
 
 	@DeleteMapping("/deleteitem/{variable}")

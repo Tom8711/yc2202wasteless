@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity 
 public class Item {
@@ -21,9 +22,9 @@ public class Item {
 	private String photo;
 	private boolean offered;
 	
+	@ManyToOne
+	private User user;
 
-//	@OneToMany
-//	List<Chat> chat1;
 	
 	public boolean isOffered() {
 		return offered;
@@ -62,6 +63,12 @@ public class Item {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 	
 }
