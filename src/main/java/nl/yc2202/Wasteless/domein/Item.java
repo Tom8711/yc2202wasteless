@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity 
 public class Item {
@@ -24,8 +25,17 @@ public class Item {
 	
 	@ManyToOne
 	private User user;
+	
+	@OneToOne
+	private Claim claim;
 
 	
+	public Claim getClaim() {
+		return claim;
+	}
+	public void setClaim(Claim claim) {
+		this.claim = claim;
+	}
 	public boolean isOffered() {
 		return offered;
 	}

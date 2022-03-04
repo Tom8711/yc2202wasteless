@@ -50,6 +50,9 @@ public class ItemService {
 		return ir.findAllByOrderByExpirationDate();
 	}
 	
+	public Optional<Item> FindById(long itemid) {
+		return ir.findById(itemid);
+	}
 	
 		
 }	
