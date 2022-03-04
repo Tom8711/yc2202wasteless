@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 import nl.yc2202.Wasteless.domein.Item;
+import nl.yc2202.Wasteless.domein.User;
 
 @Component
 public interface ItemRepository extends CrudRepository<Item, Long> {
@@ -14,5 +15,5 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
 	
 	List <Item> findByOfferedTrue();
 	List <Item> findAllByOrderByExpirationDate();
-
+	List <Item> findAllByUser(User user);
 }
