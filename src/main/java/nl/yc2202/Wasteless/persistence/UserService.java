@@ -1,5 +1,6 @@
 package nl.yc2202.Wasteless.persistence;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,14 @@ public class UserService {
 	
 	public Optional<User> FindUserById(long userid) {
 		return ur.findById(userid);
+	}
+	
+	public User FindUserByUsername(String username, String password) {
+		User user = ur.findByUsername(username);
+		if(user.getPassword().equals(password)) {
+			return user;
+		}
+		return null;
+				
 	}
 }

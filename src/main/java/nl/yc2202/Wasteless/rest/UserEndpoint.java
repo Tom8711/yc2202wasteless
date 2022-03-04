@@ -1,6 +1,10 @@
 package nl.yc2202.Wasteless.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,4 +24,11 @@ public class UserEndpoint {
 	public void createUser(@RequestBody User user) {
 		as.CreateUser(user);
 	}
+	
+	@GetMapping("/finduserbyusername/{username}/{password}") 
+	public User findUserByUsername(@PathVariable String username, @PathVariable String password){
+		
+		return as.FindUserByUsername(username, password);
+	}
+			
 }
