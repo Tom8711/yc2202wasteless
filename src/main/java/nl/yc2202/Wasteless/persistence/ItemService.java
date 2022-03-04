@@ -20,6 +20,17 @@ public class ItemService {
 	@Autowired
 	UserRepository us;
 	
+	public Iterable<Item> getAllClaimedItemsByUserId(long userId) {
+		Optional<User> optionalUser =  us.findById(userId);
+		
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			return ir.findByClaimNotNullAndUser(userEntity);
+		}
+		return ir.findByClaimNotNullAndUser(new User());
+		
+	}
+	
 	public Iterable<Item> getAllItemsById(long userId) {
 		Optional<User> optionalUser =  us.findById(userId);
 		

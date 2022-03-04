@@ -22,6 +22,11 @@ public class ItemEndpoint {
 	@Autowired
 	ItemService is;
 
+	@GetMapping("/getclaimeditemswithuserid/{userId}")
+	public Iterable<Item> getAllClaimedItemsById(@PathVariable("userId") long userId) {
+		return is.getAllClaimedItemsByUserId(userId);
+	}
+	
 	@GetMapping("/getitemswithuserid/{userId}")
 	public Iterable<Item> getAllItemsById(@PathVariable("userId") long userId) {
 		return is.getAllItemsById(userId);
