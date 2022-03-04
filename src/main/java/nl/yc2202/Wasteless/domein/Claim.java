@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import nl.yc2202.Wasteless.persistence.Status;
+
 @Entity 
 public class Claim {
 
@@ -20,6 +22,7 @@ public class Claim {
 	private boolean completed;
 	private LocalDate expiryDate;
 	private LocalDate requestDate;
+	private Status status;
 	
 	
 	@JsonIgnore 
@@ -57,5 +60,13 @@ public class Claim {
 		this.requestDate = requestDate;
 	}
 	
+	// ENUM getter and setter
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 	
 }
