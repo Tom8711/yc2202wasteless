@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+*.DS_Store
 
 ### STS ###
 .apt_generated
@@ -12,24 +13,24 @@ target/
 .settings
 .springBeans
 .sts4-cache
+*.properties
 
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
-*.properties
 
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
+/bin/
 /nbdist/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-/bin/
 
 ### VS Code ###
 .vscode/

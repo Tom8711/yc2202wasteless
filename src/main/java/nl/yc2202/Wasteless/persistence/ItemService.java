@@ -20,6 +20,15 @@ public class ItemService {
 	@Autowired
 	UserRepository us;
 	
+	public Iterable<Item> getAllItemsById(long userId) {
+		Optional<User> optionalUser =  us.findById(userId);
+		
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			return ir.findAllByUser(userEntity);
+		}
+		return ir.findAllByUser(new User());
+	}
 	
 	public Iterable<Item> getAllItems() {
 		 return ir.findAll();
@@ -50,6 +59,9 @@ public class ItemService {
 		return ir.findAllByOrderByExpirationDate();
 	}
 	
+	public Optional<Item> FindById(long itemid) {
+		return ir.findById(itemid);
+	}
 	
 		
 }	

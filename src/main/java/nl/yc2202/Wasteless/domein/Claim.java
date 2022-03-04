@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity 
 public class Claim {
@@ -18,6 +21,17 @@ public class Claim {
 	private LocalDate expiryDate;
 	private LocalDate requestDate;
 	
+	
+	@JsonIgnore 
+	@OneToOne (mappedBy = "claim")
+	private Item item;
+	
+	public Item getItem() {
+		return item;
+	}
+	public void setItem(Item item) {
+		this.item = item;
+	}
 	public long getId() {
 		return id;
 	}

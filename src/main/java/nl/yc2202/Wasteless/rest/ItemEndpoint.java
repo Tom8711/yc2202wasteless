@@ -1,6 +1,5 @@
 package nl.yc2202.Wasteless.rest;
 
-import java.io.Console;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.yc2202.Wasteless.domein.Item;
-import nl.yc2202.Wasteless.domein.User;
 import nl.yc2202.Wasteless.dto.CreateItemDto;
 import nl.yc2202.Wasteless.persistence.ItemService;
 
@@ -24,6 +22,11 @@ public class ItemEndpoint {
 	@Autowired
 	ItemService is;
 
+	@GetMapping("/getitemswithuserid/{userId}")
+	public Iterable<Item> getAllItemsById(@PathVariable("userId") long userId) {
+		return is.getAllItemsById(userId);
+	}
+	
 	@GetMapping("/getitemlist")
 	public Iterable<Item> getItemList() {
 		return is.getAllItems();
