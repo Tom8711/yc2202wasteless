@@ -15,8 +15,14 @@ public class ClaimEndpoint {
 	
 	@PostMapping ("/claim/{itemid}/createclaim")
 	public void createClaim (@PathVariable("itemid") long itemid) {
+		System.out.println(itemid);
 		cs.createClaim(itemid);
 	}
 	
-
+	@PostMapping("/claim/{claimid}/accept")
+	public void changeClaimAccept(@PathVariable("claimid") long claimid) {
+		System.out.println(claimid);
+		cs.changeClaimAccept(claimid);
+	}
+	
 }
