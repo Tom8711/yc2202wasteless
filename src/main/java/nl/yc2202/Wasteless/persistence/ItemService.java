@@ -31,7 +31,7 @@ public class ItemService {
 		
 	}
 	
-	public Iterable<Item> getAllItemsById(long userId) {
+	public Iterable<Item> getAllItemsByUserId(long userId) {
 		Optional<User> optionalUser =  us.findById(userId);
 		
 		if(optionalUser.isPresent()) {
@@ -70,10 +70,21 @@ public class ItemService {
 		return ir.findAllByOrderByExpirationDate();
 	}
 	
-	public Optional<Item> FindById(long itemid) {
-		return ir.findById(itemid);
+	public Item FindById(long itemid) {
+		Optional<Item> optionalItem =  ir.findById(itemid);
+		
+		if(optionalItem.isPresent()) {
+			Item itemEntity = optionalItem.get();
+			return itemEntity;
+		}
+		return new Item();
 	}
 	
+	public void updateOffered(boolean offered, long itemId) {
+		Item item = FindById(itemId);
+		item.setOffered(offered);
+		ir.save(item);
+	}
 		
 }	
 
