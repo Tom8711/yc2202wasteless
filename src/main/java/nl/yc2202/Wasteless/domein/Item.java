@@ -36,7 +36,7 @@ public class Item {
 	public void setClaim(Claim claim) {
 		this.claim = claim;
 	}
-	public boolean isOffered() {
+	public boolean getOffered() {
 		return offered;
 	}
 	public void setOffered(boolean offered) {
