@@ -23,17 +23,11 @@ public class ClaimService {
 	ItemService is;
 	
 	public void createClaim (long itemid) {
-	
-		Optional<Item> optionalItem = is.FindById(itemid);
-		
-		if (optionalItem.isPresent()) {
-			Item itemEntity = optionalItem.get();
-			itemEntity.setOffered(false);
-			Claim claim = new Claim();
-			itemEntity.setClaim(claim);
-			cr.save(claim);
-		}
-
+		Item itemEntity = is.FindById(itemid);
+		itemEntity.setOffered(false);
+		Claim claim = new Claim();
+		itemEntity.setClaim(claim);
+		cr.save(claim);
 	}
 
 	public void changeClaimAccept(long claimid) {
