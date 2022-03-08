@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ChatEndpoint {
-	@GetMapping("/chat")
+	@GetMapping("/chat/")
 	public void chat() {
 		System.out.println("the chat works");
 	}
