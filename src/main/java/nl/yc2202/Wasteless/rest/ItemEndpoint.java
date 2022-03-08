@@ -29,7 +29,7 @@ public class ItemEndpoint {
 	
 	@GetMapping("/getitemswithuserid/{userId}")
 	public Iterable<Item> getAllItemsById(@PathVariable("userId") long userId) {
-		return is.getAllItemsById(userId);
+		return is.getAllItemsByUserId(userId);
 	}
 	
 	@GetMapping("/getitemlist")
@@ -57,6 +57,11 @@ public class ItemEndpoint {
 	public void deleteItem(@PathVariable("variable") long id) {
 		is.DeleteItem(id);
 		
+	}
+	
+	@PostMapping("/updateoffered/{itemid}/{offered}")
+	public void updateOffered(@PathVariable("itemid")long itemId, @PathVariable("offered")boolean offered) {
+		is.updateOffered(offered, itemId);
 	}
 }
 

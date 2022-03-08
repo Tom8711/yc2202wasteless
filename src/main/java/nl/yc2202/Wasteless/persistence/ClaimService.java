@@ -1,16 +1,11 @@
 package nl.yc2202.Wasteless.persistence;
 
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
-import nl.yc2202.Wasteless.domein.User;
 
 @Service
 public class ClaimService {
@@ -22,19 +17,14 @@ public class ClaimService {
 	ItemService is;
 	
 	public void createClaim (long itemid) {
-	
-		Optional<Item> optionalItem = is.FindById(itemid);
 		
-		if (optionalItem.isPresent()) {
-			Item itemEntity = optionalItem.get();
+			Item itemEntity = is.FindById(itemid);
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
 			itemEntity.setClaim(claim);
 			cr.save(claim);
 			System.out.println("Felix 1");
 			changeClaimPending(claim.getId());
-		}
-
 	}
 
 	public void changeClaimAccept(long claimid) {
