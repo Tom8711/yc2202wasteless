@@ -1,6 +1,5 @@
 package nl.yc2202.Wasteless.persistence;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +31,8 @@ public class ClaimService {
 			Claim claim = new Claim();
 			itemEntity.setClaim(claim);
 			cr.save(claim);
+			System.out.println("Felix 1");
+			changeClaimPending(claim.getId());
 		}
 
 	}
@@ -42,6 +43,19 @@ public class ClaimService {
 		claim.setStatus(Status.APPROVED);
 		cr.save(claim);
 		
+	}
+	
+	public void changeClaimDecline(long claimid) {
+		Claim claim = cr.findById(claimid).get();
+		claim.setStatus(Status.DECLINED);
+		cr.save(claim);
+	}
+	
+	public void changeClaimPending(long claimid) {
+		Claim claim = cr.findById(claimid).get();
+		claim.setStatus(Status.PENDING);
+		System.out.println("Felix 2");
+		cr.save(claim);
 	}
 	
 

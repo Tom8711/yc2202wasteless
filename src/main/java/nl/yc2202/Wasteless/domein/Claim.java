@@ -1,6 +1,7 @@
 package nl.yc2202.Wasteless.domein;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ public class Claim {
 	long id;
 	private boolean completed;
 	private LocalDate expiryDate;
-	private LocalDate requestDate;
+	private LocalDateTime requestDate;
 	private Status status;
 	
 	
@@ -53,10 +54,10 @@ public class Claim {
 	public void setExpiryDate(LocalDate expiryDate) {
 		this.expiryDate = expiryDate;
 	}
-	public LocalDate getRequestDate() {
+	public LocalDateTime getRequestDate() {
 		return requestDate;
 	}
-	public void setRequestDate(LocalDate requestDate) {
+	public void setRequestDate(LocalDateTime requestDate) {
 		this.requestDate = requestDate;
 	}
 	
