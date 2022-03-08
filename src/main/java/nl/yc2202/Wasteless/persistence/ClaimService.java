@@ -1,17 +1,11 @@
 package nl.yc2202.Wasteless.persistence;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
-import nl.yc2202.Wasteless.domein.User;
 
 @Service
 public class ClaimService {
@@ -23,11 +17,14 @@ public class ClaimService {
 	ItemService is;
 	
 	public void createClaim (long itemid) {
-		Item itemEntity = is.FindById(itemid);
-		itemEntity.setOffered(false);
-		Claim claim = new Claim();
-		itemEntity.setClaim(claim);
-		cr.save(claim);
+		
+			Item itemEntity = is.FindById(itemid);
+			itemEntity.setOffered(false);
+			Claim claim = new Claim();
+			itemEntity.setClaim(claim);
+			cr.save(claim);
+			System.out.println("Felix 1");
+			changeClaimPending(claim.getId());
 	}
 
 	public void changeClaimAccept(long claimid) {
@@ -36,6 +33,19 @@ public class ClaimService {
 		claim.setStatus(Status.APPROVED);
 		cr.save(claim);
 		
+	}
+	
+	public void changeClaimDecline(long claimid) {
+		Claim claim = cr.findById(claimid).get();
+		claim.setStatus(Status.DECLINED);
+		cr.save(claim);
+	}
+	
+	public void changeClaimPending(long claimid) {
+		Claim claim = cr.findById(claimid).get();
+		claim.setStatus(Status.PENDING);
+		System.out.println("Felix 2");
+		cr.save(claim);
 	}
 	
 

@@ -1,12 +1,15 @@
 
 package nl.yc2202.Wasteless.persistence;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.domein.User;
 
@@ -19,6 +22,9 @@ public class ItemService {
 	
 	@Autowired
 	UserRepository us;
+	
+	@Autowired
+	ClaimRepository cr;
 	
 	public Iterable<Item> getAllClaimedItemsByUserId(long userId) {
 		Optional<User> optionalUser =  us.findById(userId);
@@ -60,14 +66,40 @@ public class ItemService {
         ir.deleteById(id);
     }
 	
-	public List<Item> getAllOfferedItems() {
-		 
+	public List<Item> getAllOfferedItems() { 
 		return ir.findByOfferedTrue();
 	
 	}
 	
 	public List<Item> getAllItemsSortedByDate(){
+		abc();
 		return ir.findAllByOrderByExpirationDate();
+	}
+	
+	public List <Claim> abc() {
+		// Stap 1: Find all claims via repository
+		// Stap 2: Loop met een for-loop en vraag de data op
+		// Stap 3: Vergelijk of de duration tussen dat moment en now is meer dan 300 seconden
+		// Stap 4: Als dat zo is, remove ze uit de lijst (ik bedoel van de claim wordt de claim op decline gezet)
+		// Stap 5: Geef lijst met overbleven claims terug
+		
+		List <Claim> claims = (List<Claim>) cr.findAll();
+		System.out.println(LocalDateTime.now());
+		
+		for (int i = 0; i < claims.size(); i++) {
+			System.out.println(claims.get(i).getId());
+			System.out.println(claims.get(i).getRequestDate());
+			Duration tussentijd = Duration.between(claims.get(i).getRequestDate(), LocalDateTime.now());
+			System.out.println(tussentijd.getSeconds());
+			if (tussentijd.getSeconds() > 300) {
+				claims.get(i).setStatus(Status.DECLINED);
+				cr.save(claims.get(i));
+				claims.remove(i);
+				}
+			}
+		
+		System.out.println("Hier gaan we alle claims filteren");
+		return claims;
 	}
 	
 	public Item FindById(long itemid) {
