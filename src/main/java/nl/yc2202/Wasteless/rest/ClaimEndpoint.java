@@ -25,13 +25,13 @@ public class ClaimEndpoint {
 		cs.changeClaimAccept(claimid);
 	}
 	
-	@PostMapping("/claim{claimid}/decline")
+	@PostMapping("/claim/{claimid}/decline")
 	public void changeClaimDeclined(@PathVariable("claimid") long claimid) {
 		System.out.println(claimid);
 		cs.changeClaimDecline(claimid);
 	}
 	
-	@PostMapping("/claim{claimid}/pending")
+	@PostMapping("/claim/{claimid}/pending")
 	public void changeClaimPending(@PathVariable("claimid") long claimid) {
 		System.out.println(claimid);
 		cs.changeClaimPending(claimid);
