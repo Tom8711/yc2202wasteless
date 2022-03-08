@@ -22,7 +22,7 @@ public class Claim {
 	long id;
 	private boolean completed;
 	private LocalDate expiryDate;
-	private LocalDateTime requestDate;
+	private LocalDateTime requestDate = LocalDateTime.now() ;
 	private Status status;
 	
 	

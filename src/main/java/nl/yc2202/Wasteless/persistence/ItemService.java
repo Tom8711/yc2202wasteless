@@ -37,6 +37,7 @@ public class ItemService {
 		
 	}
 	
+	
 	public Iterable<Item> getAllItemsByUserId(long userId) {
 		Optional<User> optionalUser =  us.findById(userId);
 		
@@ -67,16 +68,19 @@ public class ItemService {
     }
 	
 	public List<Item> getAllOfferedItems() { 
+		claimCountdown();
 		return ir.findByOfferedTrue();
 	
 	}
 	
 	public List<Item> getAllItemsSortedByDate(){
-		abc();
+		
 		return ir.findAllByOrderByExpirationDate();
 	}
 	
-	public List <Claim> abc() {
+	// Met deze functie wordt ervoor gezorgd dat claims 300 seconden na de requestDate van status pending naar status declined gaan. 
+	
+	public List <Claim> claimCountdown() {
 		// Stap 1: Find all claims via repository
 		// Stap 2: Loop met een for-loop en vraag de data op
 		// Stap 3: Vergelijk of de duration tussen dat moment en now is meer dan 300 seconden
@@ -97,8 +101,6 @@ public class ItemService {
 				claims.remove(i);
 				}
 			}
-		
-		System.out.println("Hier gaan we alle claims filteren");
 		return claims;
 	}
 	
