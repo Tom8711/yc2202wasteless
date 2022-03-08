@@ -1,6 +1,7 @@
 package nl.yc2202.Wasteless.domein;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,27 +15,28 @@ public class Chat {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	
 	long id;
-	private String message;
-	private LocalDate dateSend;
-	
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getMessage() {
-		return message;
+	public String getContent() {
+		return content;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setContent(String content) {
+		this.content = content;
 	}
-	public LocalDate getDateSend() {
-		return dateSend;
+	public LocalDateTime getTimeSended() {
+		return timeSended;
 	}
-	public void setDateSend(LocalDate dateSend) {
-		this.dateSend = dateSend;
+	public void setTimeSended(LocalDateTime timeSended) {
+		this.timeSended = timeSended;
 	}
+	private String content;
+	private LocalDateTime timeSended;
+	
+
 	
 	
 	
