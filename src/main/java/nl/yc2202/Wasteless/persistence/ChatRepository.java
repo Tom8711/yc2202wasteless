@@ -8,6 +8,6 @@ import nl.yc2202.Wasteless.domein.Chat;
 @Component
 public interface ChatRepository extends CrudRepository<Chat, Long>{
 	
-	
+	Chat findByClaimId(long claimid);
 
 }
