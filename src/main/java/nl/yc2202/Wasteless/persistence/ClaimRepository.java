@@ -14,4 +14,5 @@ public interface ClaimRepository extends CrudRepository<Claim, Long>{
 
 	
 	List <Claim> findAllByItem(Item item);
+	List <Claim> findAllByStatus(Status pending);
 }
