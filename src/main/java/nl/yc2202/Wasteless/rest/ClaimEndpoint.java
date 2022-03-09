@@ -44,5 +44,12 @@ public class ClaimEndpoint {
 	public Iterable<Claim> getClaims(@PathVariable ("itemid") long itemid) {
 		return cs.getAllClaimsByItemId(itemid);
 	}
+	
+	//Get all claims (should be one) that are pending and are connected to the given itemid 
+	@GetMapping("/claim/{itemid}/getpendingclaimsbyitemid")	
+	public Iterable<Claim> getPendingClaimsItem(@PathVariable ("itemid") long itemid) {
+		return cs.getAllPendingClaimsByItemId(itemid);
+	}
+	
 }
 		

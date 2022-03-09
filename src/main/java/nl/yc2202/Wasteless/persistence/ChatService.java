@@ -18,5 +18,9 @@ public class ChatService {
 		chat.setClaim(claim);
 		cr.save(chat);
 	}
+	
+//	public Chat findChat(long claimid) {
+//		return cr.findByClaimId(claimid);
+//	}
 
 }

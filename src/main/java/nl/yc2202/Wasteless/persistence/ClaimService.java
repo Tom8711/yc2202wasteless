@@ -70,13 +70,21 @@ public class ClaimService {
 		
 	}
 	
-	public Claim findById(long itemid) {
-		Optional<Claim> optionalClaim =  cr.findById(itemid);
+	public Iterable<Claim> getAllPendingClaimsByItemId(long itemId) {
+		Optional<Item> optionalItem =  ir.findById(itemId);
+			
+		return cr.findAllByStatusAndItem(Status.PENDING, optionalItem);
 		
-		if(optionalClaim.isPresent()) {
-			Claim claimEntity = optionalClaim.get();
-			return claimEntity;
-		}
-		return new Claim();
 	}
+	
+	
+//	public Claim findById(long claimid) {
+//		Optional<Claim> optionalClaim =  cr.findById(claimid);
+//		
+//		if(optionalClaim.isPresent()) {
+//			Claim claimEntity = optionalClaim.get();
+//			return claimEntity;
+//		}
+//		return new Claim();
+//	}
 }
