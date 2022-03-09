@@ -1,18 +1,13 @@
 package nl.yc2202.Wasteless.persistence;
 
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
-import nl.yc2202.Wasteless.domein.User;
 
 @Service
 public class ClaimService {
@@ -26,6 +21,9 @@ public class ClaimService {
 	@Autowired 
 	ItemRepository ir;
 	
+	@Autowired
+	ChatService cs;
+	
 	
 		
 	public void createClaim (long itemid) {
@@ -35,6 +33,8 @@ public class ClaimService {
 			Claim claim = new Claim();
 			claim.setItem(itemEntity);
 			cr.save(claim);
+			//Create a new chat
+			cs.createChat(claim);
 			System.out.println(claim.getRequestDate());
 			changeClaimPending(claim.getId());
 	}
