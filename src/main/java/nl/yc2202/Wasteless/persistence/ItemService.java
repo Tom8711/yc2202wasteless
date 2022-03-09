@@ -108,7 +108,7 @@ public class ItemService {
 			System.out.println(claims.get(i).getRequestDate());
 			Duration tussentijd = Duration.between(claims.get(i).getRequestDate(), LocalDateTime.now());
 			System.out.println(tussentijd.getSeconds());
-			if (tussentijd.getSeconds() > 30) {
+			if (tussentijd.getSeconds() > 60) {
 				claims.get(i).setStatus(Status.DECLINED);
 				claims.get(i).getItem().setOffered(true);
 				cr.save(claims.get(i));
