@@ -30,6 +30,9 @@ public class Claim {
 	@ManyToOne
 	private Item item;
 	
+	@OneToOne
+	private Chat chat;
+	
 	public Item getItem() {
 		return item;
 	}
@@ -62,6 +65,12 @@ public class Claim {
 	
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public Chat getChat() {
+		return chat;
+	}
+	public void setChat(Chat chat) {
+		this.chat = chat;
 	}
 	
 }
