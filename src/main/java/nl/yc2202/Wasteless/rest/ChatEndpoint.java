@@ -2,8 +2,6 @@ package nl.yc2202.Wasteless.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.yc2202.Wasteless.persistence.ChatService;
@@ -26,8 +24,4 @@ public class ChatEndpoint {
 		System.out.println("HTML works");
 	}
 	
-	@PostMapping("/chat/{claimid}/createchat")
-	public void createClaim (@PathVariable long claimid) {
-		cs.createChat (claimid);
-	}
 }

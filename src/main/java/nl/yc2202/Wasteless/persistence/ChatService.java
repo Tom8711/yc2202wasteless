@@ -12,14 +12,10 @@ public class ChatService {
 	@Autowired
 	ChatRepository cr;
 	
-	@Autowired
-	ClaimService cs;
-	
-	public void createChat (long claimid) {
+	public void createChat (Claim claim) {
 		
-		Claim claimEntity = cs.findById(claimid);
 		Chat chat = new Chat();
-		chat.setClaim(claimEntity);
+		chat.setClaim(claim);
 		cr.save(chat);
 	}
 
