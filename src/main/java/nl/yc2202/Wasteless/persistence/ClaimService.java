@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.domein.User;
@@ -25,6 +26,8 @@ public class ClaimService {
 	@Autowired 
 	ItemRepository ir;
 	
+	
+		
 	public void createClaim (long itemid) {
 		
 			Item itemEntity = is.FindById(itemid);
@@ -65,5 +68,15 @@ public class ClaimService {
 			System.out.println(itemEntity);
 			return cr.findAllByItem(itemEntity);
 		
+	}
+	
+	public Claim findById(long itemid) {
+		Optional<Claim> optionalClaim =  cr.findById(itemid);
+		
+		if(optionalClaim.isPresent()) {
+			Claim claimEntity = optionalClaim.get();
+			return claimEntity;
+		}
+		return new Claim();
 	}
 }
