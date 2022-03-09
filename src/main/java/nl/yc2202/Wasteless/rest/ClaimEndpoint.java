@@ -42,9 +42,8 @@ public class ClaimEndpoint {
 		cs.changeClaimPending(claimid);
 	}
 
-	@GetMapping("/test/{itemid}")	
+	@GetMapping("/claim/{itemid}/getclaims")	
 	public Iterable<Claim> getClaims(@PathVariable ("itemid") long itemid) {
-		System.out.println("test");
 		return cs.getAllClaimsByItemId(itemid);
 	}
 }
