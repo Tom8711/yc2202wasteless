@@ -21,13 +21,14 @@ public class ItemService {
 	ItemRepository ir;
 	
 	@Autowired
-	UserRepository us;
+	UserRepository ur;
 	
 	@Autowired
 	ClaimRepository cr;
 	
+	
 	public Iterable<Item> getAllClaimedItemsByUserId(long userId) {
-		Optional<User> optionalUser =  us.findById(userId);
+		Optional<User> optionalUser =  ur.findById(userId);
 		
 		if(optionalUser.isPresent()) {
 			User userEntity = optionalUser.get();
@@ -38,7 +39,7 @@ public class ItemService {
 	}
 	
 	public Iterable<Item> getAllItemsByUserId(long userId) {
-		Optional<User> optionalUser =  us.findById(userId);
+		Optional<User> optionalUser =  ur.findById(userId);
 		
 		if(optionalUser.isPresent()) {
 			User userEntity = optionalUser.get();
@@ -47,13 +48,13 @@ public class ItemService {
 		return ir.findAllByUser(new User());
 	}
 	
-	public Iterable<Item> getAllItems() {
-		 return ir.findAll();
-	}
+//	public Iterable<Item> getAllItems() {
+//		 return ir.findAll();
+//	}
 	
 	public void CreateItem(Item item, long userId) {
 		
-		Optional<User> optionalUser =  us.findById(userId);
+		Optional<User> optionalUser =  ur.findById(userId);
 		
 		if(optionalUser.isPresent()) {
 			User userEntity = optionalUser.get();
@@ -67,40 +68,14 @@ public class ItemService {
     }
 	
 	public List<Item> getAllOfferedItems() { 
+		CheckPendingClaims();
 		return ir.findByOfferedTrue();
-	
 	}
 	
-	public List<Item> getAllItemsSortedByDate(){
-		abc();
-		return ir.findAllByOrderByExpirationDate();
-	}
+//	public List<Item> getAllItemsSortedByDate(){
+//		return ir.findAllByOrderByExpirationDate();
+//	}
 	
-	public List <Claim> abc() {
-		// Stap 1: Find all claims via repository
-		// Stap 2: Loop met een for-loop en vraag de data op
-		// Stap 3: Vergelijk of de duration tussen dat moment en now is meer dan 300 seconden
-		// Stap 4: Als dat zo is, remove ze uit de lijst (ik bedoel van de claim wordt de claim op decline gezet)
-		// Stap 5: Geef lijst met overbleven claims terug
-		
-		List <Claim> claims = (List<Claim>) cr.findAll();
-		System.out.println(LocalDateTime.now());
-		
-		for (int i = 0; i < claims.size(); i++) {
-			System.out.println(claims.get(i).getId());
-			System.out.println(claims.get(i).getRequestDate());
-			Duration tussentijd = Duration.between(claims.get(i).getRequestDate(), LocalDateTime.now());
-			System.out.println(tussentijd.getSeconds());
-			if (tussentijd.getSeconds() > 30) {
-				claims.get(i).setStatus(Status.DECLINED);
-				cr.save(claims.get(i));
-				claims.remove(i);
-				}
-			}
-		
-		System.out.println("Hier gaan we alle claims filteren");
-		return claims;
-	}
 	
 	public Item FindById(long itemid) {
 		Optional<Item> optionalItem =  ir.findById(itemid);
@@ -117,6 +92,30 @@ public class ItemService {
 		item.setOffered(offered);
 		ir.save(item);
 	}
+	
+	public void CheckPendingClaims() {
+		// Stap 1: Find all claims via repository
+		// Stap 2: Loop met een for-loop en vraag de data op
+		// Stap 3: Vergelijk of de duration tussen dat moment en now is meer dan 300 seconden
+		// Stap 4: Als dat zo is, remove ze uit de lijst (ik bedoel van de claim wordt de claim op decline gezet)
+		// Stap 5: Geef lijst met overbleven claims terug
 		
+		List <Claim> claims = (List<Claim>) cr.findAllByStatus(Status.PENDING);
+		System.out.println(LocalDateTime.now());
+		
+		for (int i = 0; i < claims.size(); i++) {
+			System.out.println(claims.get(i).getId());
+			System.out.println(claims.get(i).getRequestDate());
+			Duration tussentijd = Duration.between(claims.get(i).getRequestDate(), LocalDateTime.now());
+			System.out.println(tussentijd.getSeconds());
+			if (tussentijd.getSeconds() > 30) {
+				claims.get(i).setStatus(Status.DECLINED);
+				claims.get(i).getItem().setOffered(true);
+				cr.save(claims.get(i));
+			}
+		}
+		System.out.println("Hier gaan we alle claims filteren");
+	}
+	
 }	
 

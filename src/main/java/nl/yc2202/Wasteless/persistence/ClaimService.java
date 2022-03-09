@@ -1,6 +1,9 @@
 package nl.yc2202.Wasteless.persistence;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,7 @@ public class ClaimService {
 			Item itemEntity = is.FindById(itemid);
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
-			itemEntity.setClaim(claim);
+			claim.setItem(itemEntity);
 			cr.save(claim);
 			System.out.println(claim.getRequestDate());
 			changeClaimPending(claim.getId());
@@ -63,6 +66,4 @@ public class ClaimService {
 			return cr.findAllByItem(itemEntity);
 		
 	}
-	
-	
 }

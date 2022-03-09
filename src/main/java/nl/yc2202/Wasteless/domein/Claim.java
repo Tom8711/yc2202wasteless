@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,13 +23,11 @@ public class Claim {
 	
 	long id;
 	private boolean completed;
-	private LocalDate expiryDate;
 	private LocalDateTime requestDate = LocalDateTime.now();
 	private Status status;
 	
 	
-	@JsonIgnore 
-	@OneToOne (mappedBy = "claim")
+	@ManyToOne
 	private Item item;
 	
 	public Item getItem() {
@@ -47,12 +47,6 @@ public class Claim {
 	}
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
-	}
-	public LocalDate getExpiryDate() {
-		return expiryDate;
-	}
-	public void setExpiryDate(LocalDate expiryDate) {
-		this.expiryDate = expiryDate;
 	}
 	public LocalDateTime getRequestDate() {
 		return requestDate;

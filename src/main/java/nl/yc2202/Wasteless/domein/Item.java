@@ -1,13 +1,17 @@
 package nl.yc2202.Wasteless.domein;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity 
 public class Item {
@@ -18,7 +22,7 @@ public class Item {
 	long id;
 	private String name;
 	private LocalDate expirationDate;
-	private int amount;
+	private String amount;
 	//note foto moet uiteindelijk een blob worden om goed opgeslagen te worden
 	private String photo;
 	private boolean offered;
@@ -26,14 +30,15 @@ public class Item {
 	@ManyToOne
 	private User user;
 	
-	@OneToOne
-	private Claim claim;
+	@JsonIgnore
+	@OneToMany (mappedBy = "item")
+	private List<Claim> claim;
 
 	
-	public Claim getClaim() {
+	public List<Claim> getClaim() {
 		return claim;
 	}
-	public void setClaim(Claim claim) {
+	public void setClaim(List<Claim> claim) {
 		this.claim = claim;
 	}
 	public boolean getOffered() {
@@ -61,10 +66,10 @@ public class Item {
 	public void setExpirationDate(LocalDate expirationDate) {
 		this.expirationDate = expirationDate;
 	}
-	public int getAmount() {
+	public String getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 	public String getPhoto() {

@@ -32,20 +32,20 @@ public class ItemEndpoint {
 		return is.getAllItemsByUserId(userId);
 	}
 	
-	@GetMapping("/getitemlist")
-	public Iterable<Item> getItemList() {
-		return is.getAllItems();
-	}
+//	@GetMapping("/getitemlist")
+//	public Iterable<Item> getItemList() {
+//		return is.getAllItems();
+//	}
 	
 	@GetMapping ("/getoffereditemlist")
 	public List<Item> getOfferedItemlist() {
 		return is.getAllOfferedItems();
 	}
 
-	@GetMapping ("/getlistitembydate")
-	public List<Item> getListItemByDate() {
-		return is.getAllItemsSortedByDate();
-	}
+//	@GetMapping ("/getlistitembydate")
+//	public List<Item> getListItemByDate() {
+//		return is.getAllItemsSortedByDate();
+//	}
 	
 	
 	@PostMapping("/createitem")
