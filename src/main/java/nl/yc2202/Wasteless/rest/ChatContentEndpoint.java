@@ -16,9 +16,9 @@ public class ChatContentEndpoint {
 	ChatContentService ccs;
 	
 	@PostMapping("/chatcontent/{chatid}/create")
-	public void createItem(@RequestBody ChatContent chatContent, @PathVariable long chatid) {
+	public void createItem(@RequestBody String chatContent, @PathVariable long chatid) {
 		System.out.println("test");
-		ccs.CreateChatContent(chatContent, chatid);
+		ccs.createChatContent(chatContent, chatid);
 	}
 
 }

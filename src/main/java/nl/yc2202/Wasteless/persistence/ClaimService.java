@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
 
@@ -24,19 +25,28 @@ public class ClaimService {
 	@Autowired
 	ChatService cs;
 	
+	@Autowired
+	ChatRepository chr;
+	
+	@Autowired
+	ChatContentService ccs;
+	
 	
 		
-	public void createClaim (long itemid) {
+	public void createClaim (long itemid, String chatContent) {
 		
-			Item itemEntity = is.FindById(itemid);
+			Item itemEntity = is.FindById(itemid); 
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
 			claim.setItem(itemEntity);
 			cr.save(claim);
-			//Create a new chat
-			cs.createChat(claim);
-			System.out.println(claim.getRequestDate());
 			changeClaimPending(claim.getId());
+			//Create a new chat
+			if(chatContent.isBlank()==false) {
+				cs.createChat(claim);
+				Chat chat = chr.findByClaimId(claim.getId());
+				ccs.createChatContent(chatContent, chat.getId());				
+			}
 	}
 
 	public void changeClaimAccept(long claimid) {
