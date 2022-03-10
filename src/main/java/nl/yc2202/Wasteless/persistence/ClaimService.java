@@ -80,15 +80,15 @@ public class ClaimService {
 	}
 	
 	public void changeClaimDecline(long itemid) {
-		Optional <Item> optionalItem = ir.findById(itemid); 
+		Optional<Item> optionalItem = ir.findById(itemid);
 		if (optionalItem.isPresent()) {
 			Item item = optionalItem.get();
 			Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
-			if (optionalClaim.isPresent()) {
-				Claim claim = optionalClaim.get();
-				claim.setStatus(Status.DECLINED);
-				cr.save(claim);
-			}
+				if (optionalClaim.isPresent()) {
+					Claim claim = optionalClaim.get();
+					claim.setStatus(Status.DECLINED);
+					cr.save(claim);	
+				}
 		}
 	}
 	
