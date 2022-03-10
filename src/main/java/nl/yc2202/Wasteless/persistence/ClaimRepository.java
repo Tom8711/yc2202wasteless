@@ -1,6 +1,7 @@
 package nl.yc2202.Wasteless.persistence;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
@@ -14,4 +15,6 @@ public interface ClaimRepository extends CrudRepository<Claim, Long>{
 	
 	List <Claim> findAllByItem(Item item);
 	List <Claim> findAllByStatus(Status pending);
+	
+	Optional <Claim> findFirstByItemOrderByRequestDateDesc(Item item);
 }
