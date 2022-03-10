@@ -66,24 +66,35 @@ public class ClaimService {
 			}
 	}
 
-	public void changeClaimAccept(long claimid) {
-		// TODO Auto-generated method stub
-		Claim claim = cr.findById(claimid).get();
-		claim.setStatus(Status.APPROVED);
-		cr.save(claim);
-		
+	public void changeClaimAccept(long itemid) {
+		Optional<Item> optionalItem = ir.findById(itemid);
+		if (optionalItem.isPresent()) {
+			Item item = optionalItem.get();
+			Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
+				if (optionalClaim.isPresent()) {
+					Claim claim = optionalClaim.get();
+					claim.setStatus(Status.APPROVED);
+					cr.save(claim);	
+				}
+		}	
 	}
 	
-	public void changeClaimDecline(long claimid) {
-		Claim claim = cr.findById(claimid).get();
-		claim.setStatus(Status.DECLINED);
-		cr.save(claim);
+	public void changeClaimDecline(long itemid) {
+		Optional <Item> optionalItem = ir.findById(itemid); 
+		if (optionalItem.isPresent()) {
+			Item item = optionalItem.get();
+			Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
+			if (optionalClaim.isPresent()) {
+				Claim claim = optionalClaim.get();
+				claim.setStatus(Status.DECLINED);
+				cr.save(claim);
+			}
+		}
 	}
 	
 	public void changeClaimPending(long claimid) {
 		Claim claim = cr.findById(claimid).get();
 		claim.setStatus(Status.PENDING);
-		System.out.println("Felix 2");
 		cr.save(claim);
 	}
 	
@@ -104,7 +115,16 @@ public class ClaimService {
 		
 	}
 	
+	public Claim findLatestClaim(Item item) {
+		Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
 	
+	if(optionalClaim.isPresent()) {
+		Claim claimEntity = optionalClaim.get();
+		return claimEntity;
+	}
+	return new Claim();
+}
+
 //	public Claim findById(long claimid) {
 //		Optional<Claim> optionalClaim =  cr.findById(claimid);
 //		
@@ -114,4 +134,5 @@ public class ClaimService {
 //		}
 //		return new Claim();
 //	}
+
 }
