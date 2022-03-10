@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.yc2202.Wasteless.domein.Claim;
+import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.dto.CreateClaimDto;
 import nl.yc2202.Wasteless.persistence.ClaimService;
 
@@ -17,10 +18,15 @@ public class ClaimEndpoint {
 	@Autowired
 	ClaimService cs;
 	
+	@GetMapping("/claim/{userId}/getclaimsdone")
+	public Iterable<Claim> getAllClaimsDoneByUserId(@PathVariable("userId") long userId) {
+		return cs.getAllClaimsDoneByUserId(userId);
+	}
+	
 	@PostMapping ("/claim/createclaim")
 	public void createClaim (@RequestBody CreateClaimDto createClaimDto) {
 		System.out.println("test");
-		cs.createClaim(createClaimDto.getItemId(), createClaimDto.getChatContentMessage());
+		cs.createClaim(createClaimDto.getItemId(), createClaimDto.getChatContentMessage(), createClaimDto.getUserId());
 	}
 	
 	@PostMapping("/claim/{claimid}/accept")

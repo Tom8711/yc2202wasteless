@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
+import nl.yc2202.Wasteless.domein.User;
 
 @Service
 public class ClaimService {
@@ -31,14 +32,30 @@ public class ClaimService {
 	@Autowired
 	ChatContentService ccs;
 	
+	@Autowired
+	UserRepository ur;
 	
+	public Iterable<Claim> getAllClaimsDoneByUserId(long userId) {
+		Optional<User> optionalUser =  ur.findById(userId);
 		
-	public void createClaim (long itemid, String chatContent) {
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			return cr.findAllByUser(userEntity);
+		}
+		return cr.findAllByUser(new User());
+		
+	}
+		
+	public void createClaim (long itemid, String chatContent, long userid) {
 		
 			Item itemEntity = is.FindById(itemid); 
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
 			claim.setItem(itemEntity);
+			//Store claim with responding user
+			Optional<User> optionalUser = ur.findById(userid);
+			User user = optionalUser.get();
+			claim.setUser(user);
 			cr.save(claim);
 			changeClaimPending(claim.getId());
 			//Create a new chat
