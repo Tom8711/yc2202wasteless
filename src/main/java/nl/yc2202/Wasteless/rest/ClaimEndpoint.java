@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.yc2202.Wasteless.domein.Claim;
+import nl.yc2202.Wasteless.dto.CreateClaimDto;
 import nl.yc2202.Wasteless.persistence.ClaimService;
 
 @RestController
@@ -15,10 +17,10 @@ public class ClaimEndpoint {
 	@Autowired
 	ClaimService cs;
 	
-	@PostMapping ("/claim/{itemid}/createclaim")
-	public void createClaim (@PathVariable("itemid") long itemid) {
-		System.out.println(itemid);
-		cs.createClaim(itemid);
+	@PostMapping ("/claim/createclaim")
+	public void createClaim (@RequestBody CreateClaimDto createClaimDto) {
+		System.out.println("test");
+		cs.createClaim(createClaimDto.getItemId(), createClaimDto.getChatContentMessage());
 	}
 	
 	@PostMapping("/claim/{claimid}/accept")
