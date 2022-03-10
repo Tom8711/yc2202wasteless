@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
+import nl.yc2202.Wasteless.domein.User;
 
 @Component
 public interface ClaimRepository extends CrudRepository<Claim, Long>{
@@ -17,4 +18,8 @@ public interface ClaimRepository extends CrudRepository<Claim, Long>{
 	List <Claim> findAllByStatus(Status pending);
 	
 	Optional <Claim> findFirstByItemOrderByRequestDateDesc(Item item);
+
+	List <Claim> findAllByStatusAndItem(Status pending, Optional<Item> item);
+	List <Claim> findAllByUser(User user);
+
 }

@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
+import nl.yc2202.Wasteless.domein.User;
 
 @Service
 public class ClaimService {
@@ -24,19 +26,44 @@ public class ClaimService {
 	@Autowired
 	ChatService cs;
 	
+	@Autowired
+	ChatRepository chr;
 	
+	@Autowired
+	ChatContentService ccs;
+	
+	@Autowired
+	UserRepository ur;
+	
+	public Iterable<Claim> getAllClaimsDoneByUserId(long userId) {
+		Optional<User> optionalUser =  ur.findById(userId);
 		
-	public void createClaim (long itemid) {
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			return cr.findAllByUser(userEntity);
+		}
+		return cr.findAllByUser(new User());
 		
-			Item itemEntity = is.FindById(itemid);
+	}
+		
+	public void createClaim (long itemid, String chatContent, long userid) {
+		
+			Item itemEntity = is.FindById(itemid); 
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
 			claim.setItem(itemEntity);
+			//Store claim with responding user
+			Optional<User> optionalUser = ur.findById(userid);
+			User user = optionalUser.get();
+			claim.setUser(user);
 			cr.save(claim);
-			//Create a new chat
-			cs.createChat(claim);
-			System.out.println(claim.getRequestDate());
 			changeClaimPending(claim.getId());
+			//Create a new chat
+			if(chatContent.isBlank()==false) {
+				cs.createChat(claim);
+				Chat chat = chr.findByClaimId(claim.getId());
+				ccs.createChatContent(chatContent, chat.getId());				
+			}
 	}
 
 	public void changeClaimAccept(long itemid) {
@@ -81,16 +108,12 @@ public class ClaimService {
 		
 	}
 	
-	public Claim findById(long itemid) {
-		Optional<Claim> optionalClaim =  cr.findById(itemid);
+	public Iterable<Claim> getAllPendingClaimsByItemId(long itemId) {
+		Optional<Item> optionalItem =  ir.findById(itemId);
+			
+		return cr.findAllByStatusAndItem(Status.PENDING, optionalItem);
 		
-		if(optionalClaim.isPresent()) {
-			Claim claimEntity = optionalClaim.get();
-			return claimEntity;
-		}
-		return new Claim();
 	}
-	
 	
 	public Claim findLatestClaim(Item item) {
 		Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
@@ -101,4 +124,15 @@ public class ClaimService {
 	}
 	return new Claim();
 }
+
+//	public Claim findById(long claimid) {
+//		Optional<Claim> optionalClaim =  cr.findById(claimid);
+//		
+//		if(optionalClaim.isPresent()) {
+//			Claim claimEntity = optionalClaim.get();
+//			return claimEntity;
+//		}
+//		return new Claim();
+//	}
+
 }
