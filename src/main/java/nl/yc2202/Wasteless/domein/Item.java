@@ -3,10 +3,12 @@ package nl.yc2202.Wasteless.domein;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -22,7 +24,9 @@ public class Item {
 	private String name;
 	private LocalDate expirationDate;
 	private String amount;
-	//note foto moet uiteindelijk een blob worden om goed opgeslagen te worden
+	
+	@Lob
+	@Column(length = 1000000000)
 	private String photo;
 	private boolean offered;
 	
