@@ -117,5 +117,9 @@ public class ItemService {
 		System.out.println("Hier gaan we alle claims filteren");
 	}
 	
+	public long count() {
+		return ir.count();
+	}
+	
 }	
 

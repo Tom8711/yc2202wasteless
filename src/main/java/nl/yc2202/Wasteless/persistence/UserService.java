@@ -30,4 +30,8 @@ public class UserService {
 		return null;
 				
 	}
+	
+	public long Count() {
+		return ur.count();
+	}
 }
