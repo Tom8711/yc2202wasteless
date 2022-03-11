@@ -19,13 +19,15 @@ public class ChatContentService {
 	@Autowired
 	ChatRepository cr;
 	
-	public void CreateChatContent(ChatContent chatContent ,long chatid) {
+	public void createChatContent(String content, long chatid) {
 		
 		Optional<Chat> optionalChat =  cr.findById(chatid);
 		
 		if(optionalChat.isPresent()) {
 			Chat chatEntity = optionalChat.get();
+			ChatContent chatContent = new ChatContent();
 			chatContent.setChat(chatEntity);
+			chatContent.setContent(content);
 			chatContent.setMessageTime(LocalDateTime.now());
 			ccr.save(chatContent);
 		}
