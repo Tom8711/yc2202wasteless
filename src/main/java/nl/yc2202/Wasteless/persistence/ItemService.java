@@ -76,6 +76,11 @@ public class ItemService {
 //		return ir.findAllByOrderByExpirationDate();
 //	}
 	
+	public List<Item> findByOfferedTrueOrderByExpirationDate() {
+		System.out.println("Test");
+		return ir.findAllByOrderByExpirationDate();
+	}
+	
 	
 	public Item FindById(long itemid) {
 		Optional<Item> optionalItem =  ir.findById(itemid);

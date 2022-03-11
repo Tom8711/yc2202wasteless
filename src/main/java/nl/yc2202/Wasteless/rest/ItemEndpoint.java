@@ -67,6 +67,13 @@ public class ItemEndpoint {
 //		return is.getAllItemsSortedByDate();
 //	}
 	
+	// All items and sorted by expiration date
+	@GetMapping ("/getlistclaimbydate")
+	public List<Item> getListClaimByDate() {
+		System.out.println("Test1");
+		return is.findByOfferedTrueOrderByExpirationDate();
+	}
+	
 	
 	@PostMapping("/createitem")
 	public void createItem(@RequestBody CreateItemDto createItemDto) {
