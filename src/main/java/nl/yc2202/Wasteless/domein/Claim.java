@@ -1,6 +1,5 @@
 package nl.yc2202.Wasteless.domein;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -8,10 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import nl.yc2202.Wasteless.persistence.Status;
 
@@ -30,6 +26,20 @@ public class Claim {
 	@ManyToOne
 	private Item item;
 	
+	@OneToOne
+	private Chat chat;
+	
+	@ManyToOne 
+	private User user;
+	
+	
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public Item getItem() {
 		return item;
 	}
@@ -62,6 +72,12 @@ public class Claim {
 	
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public Chat getChat() {
+		return chat;
+	}
+	public void setChat(Chat chat) {
+		this.chat = chat;
 	}
 	
 }

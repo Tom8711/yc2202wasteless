@@ -1,14 +1,12 @@
 package nl.yc2202.Wasteless.persistence;
 
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import nl.yc2202.Wasteless.domein.Chat;
 import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.domein.User;
@@ -25,35 +23,78 @@ public class ClaimService {
 	@Autowired 
 	ItemRepository ir;
 	
-	public void createClaim (long itemid) {
+	@Autowired
+	ChatService cs;
+	
+	@Autowired
+	ChatRepository chr;
+	
+	@Autowired
+	ChatContentService ccs;
+	
+	@Autowired
+	UserRepository ur;
+	
+	public Iterable<Claim> getAllClaimsDoneByUserId(long userId) {
+		Optional<User> optionalUser =  ur.findById(userId);
 		
-			Item itemEntity = is.FindById(itemid);
+		if(optionalUser.isPresent()) {
+			User userEntity = optionalUser.get();
+			return cr.findAllByUser(userEntity);
+		}
+		return cr.findAllByUser(new User());
+		
+	}
+		
+	public void createClaim (long itemid, String chatContent, long userid) {
+		
+			Item itemEntity = is.FindById(itemid); 
 			itemEntity.setOffered(false);
 			Claim claim = new Claim();
 			claim.setItem(itemEntity);
+			//Store claim with responding user
+			Optional<User> optionalUser = ur.findById(userid);
+			User user = optionalUser.get();
+			claim.setUser(user);
 			cr.save(claim);
-			System.out.println(claim.getRequestDate());
 			changeClaimPending(claim.getId());
+			//Create a new chat
+			if(chatContent.isBlank()==false) {
+				cs.createChat(claim);
+				Chat chat = chr.findByClaimId(claim.getId());
+				ccs.createChatContent(chatContent, chat.getId());				
+			}
 	}
 
-	public void changeClaimAccept(long claimid) {
-		// TODO Auto-generated method stub
-		Claim claim = cr.findById(claimid).get();
-		claim.setStatus(Status.APPROVED);
-		cr.save(claim);
-		
+	public void changeClaimAccept(long itemid) {
+		Optional<Item> optionalItem = ir.findById(itemid);
+		if (optionalItem.isPresent()) {
+			Item item = optionalItem.get();
+			Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
+				if (optionalClaim.isPresent()) {
+					Claim claim = optionalClaim.get();
+					claim.setStatus(Status.APPROVED);
+					cr.save(claim);	
+				}
+		}	
 	}
 	
-	public void changeClaimDecline(long claimid) {
-		Claim claim = cr.findById(claimid).get();
-		claim.setStatus(Status.DECLINED);
-		cr.save(claim);
+	public void changeClaimDecline(long itemid) {
+		Optional<Item> optionalItem = ir.findById(itemid);
+		if (optionalItem.isPresent()) {
+			Item item = optionalItem.get();
+			Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
+				if (optionalClaim.isPresent()) {
+					Claim claim = optionalClaim.get();
+					claim.setStatus(Status.DECLINED);
+					cr.save(claim);	
+				}
+		}
 	}
 	
 	public void changeClaimPending(long claimid) {
 		Claim claim = cr.findById(claimid).get();
 		claim.setStatus(Status.PENDING);
-		System.out.println("Felix 2");
 		cr.save(claim);
 	}
 	
@@ -66,4 +107,32 @@ public class ClaimService {
 			return cr.findAllByItem(itemEntity);
 		
 	}
+	
+	public Iterable<Claim> getAllPendingClaimsByItemId(long itemId) {
+		Optional<Item> optionalItem =  ir.findById(itemId);
+			
+		return cr.findAllByStatusAndItem(Status.PENDING, optionalItem);
+		
+	}
+	
+	public Claim findLatestClaim(Item item) {
+		Optional <Claim> optionalClaim = cr.findFirstByItemOrderByRequestDateDesc(item);
+	
+	if(optionalClaim.isPresent()) {
+		Claim claimEntity = optionalClaim.get();
+		return claimEntity;
+	}
+	return new Claim();
+}
+
+//	public Claim findById(long claimid) {
+//		Optional<Claim> optionalClaim =  cr.findById(claimid);
+//		
+//		if(optionalClaim.isPresent()) {
+//			Claim claimEntity = optionalClaim.get();
+//			return claimEntity;
+//		}
+//		return new Claim();
+//	}
+
 }

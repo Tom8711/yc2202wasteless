@@ -1,5 +1,6 @@
 package nl.yc2202.Wasteless.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import nl.yc2202.Wasteless.domein.Claim;
 import nl.yc2202.Wasteless.domein.Item;
 import nl.yc2202.Wasteless.dto.CreateItemDto;
+import nl.yc2202.Wasteless.dto.ItemStatusDto;
+import nl.yc2202.Wasteless.persistence.ClaimService;
 import nl.yc2202.Wasteless.persistence.ItemService;
+import nl.yc2202.Wasteless.persistence.Status;
 
 
 @RestController
@@ -21,10 +26,25 @@ public class ItemEndpoint {
 
 	@Autowired
 	ItemService is;
+	
+	@Autowired 
+	ClaimService cs;
 
 	@GetMapping("/getclaimeditemswithuserid/{userId}")
-	public Iterable<Item> getAllClaimedItemsById(@PathVariable("userId") long userId) {
-		return is.getAllClaimedItemsByUserId(userId);
+	public List<ItemStatusDto> getAllClaimedItemsById(@PathVariable("userId") long userId) {
+		
+		List<ItemStatusDto> result = new ArrayList <>();
+		
+		Iterable <Item> item = is.getAllClaimedItemsByUserId(userId);
+		for(Item i: item){
+			ItemStatusDto itemStatusDto = new ItemStatusDto();
+			itemStatusDto.setItem(i);
+			Claim claim = cs.findLatestClaim(i);
+			itemStatusDto.setStatus(claim.getStatus());
+			result.add(itemStatusDto);
+		}
+		
+		return result;
 	}
 	
 	@GetMapping("/getitemswithuserid/{userId}")
@@ -46,6 +66,13 @@ public class ItemEndpoint {
 //	public List<Item> getListItemByDate() {
 //		return is.getAllItemsSortedByDate();
 //	}
+	
+	// All items and sorted by expiration date
+	@GetMapping ("/getlistclaimbydate")
+	public List<Item> getListClaimByDate() {
+		System.out.println("Test1");
+		return is.findByOfferedTrueOrderByExpirationDate();
+	}
 	
 	
 	@PostMapping("/createitem")

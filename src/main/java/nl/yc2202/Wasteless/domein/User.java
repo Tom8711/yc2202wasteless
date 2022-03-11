@@ -22,14 +22,22 @@ public class User {
 	private String email;
 	private String password;
 	private String location;
-	
-	@OneToOne()
-	private Claim claim;
-	
+		
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Item> items;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Claim> claims;
+	
+	
+	public List<Claim> getClaims() {
+		return claims;
+	}
+	public void setClaims(List<Claim> claims) {
+		this.claims = claims;
+	}
 	public long getId() {
 		return id;
 	}
@@ -65,12 +73,6 @@ public class User {
 	}
 	public void setLocation(String location) {
 		this.location = location;
-	}
-	public Claim getClaim() {
-		return claim;
-	}
-	public void setClaim(Claim claim) {
-		this.claim = claim;
 	}
 	
 }

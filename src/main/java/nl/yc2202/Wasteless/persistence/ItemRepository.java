@@ -17,4 +17,5 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
 	List <Item> findAllByOrderByExpirationDate();
 	List <Item> findAllByUser(User user);
 	List <Item> findByClaimNotNullAndUser(User user);
+	List <Item> findByOfferedTrueOrderByExpirationDate();
 }
