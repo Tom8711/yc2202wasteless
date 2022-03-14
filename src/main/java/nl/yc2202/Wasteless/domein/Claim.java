@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import nl.yc2202.Wasteless.persistence.Status;
 
 @Entity 
@@ -26,7 +28,7 @@ public class Claim {
 	@ManyToOne
 	private Item item;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "claim")
 	private Chat chat;
 	
 	@ManyToOne 

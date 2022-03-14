@@ -1,6 +1,7 @@
 package nl.yc2202.Wasteless.persistence;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,6 @@ public class ClaimService {
 	ItemRepository ir;
 	
 	@Autowired
-	ChatService cs;
-	
-	@Autowired
 	ChatRepository chr;
 	
 	@Autowired
@@ -35,7 +33,7 @@ public class ClaimService {
 	@Autowired
 	UserRepository ur;
 	
-	public Iterable<Claim> getAllClaimsDoneByUserId(long userId) {
+	public List<Claim> getAllClaimsDoneByUserId(long userId) {
 		Optional<User> optionalUser =  ur.findById(userId);
 		
 		if(optionalUser.isPresent()) {
@@ -48,22 +46,23 @@ public class ClaimService {
 		
 	public void createClaim (long itemid, String chatContent, long userid) {
 		
-			Item itemEntity = is.FindById(itemid); 
-			itemEntity.setOffered(false);
-			Claim claim = new Claim();
-			claim.setItem(itemEntity);
-			//Store claim with responding user
-			Optional<User> optionalUser = ur.findById(userid);
-			User user = optionalUser.get();
-			claim.setUser(user);
-			cr.save(claim);
-			changeClaimPending(claim.getId());
-			//Create a new chat
-			if(chatContent.isBlank()==false) {
-				cs.createChat(claim);
-				Chat chat = chr.findByClaimId(claim.getId());
-				ccs.createChatContent(chatContent, chat.getId());				
-			}
+		Item itemEntity = is.FindById(itemid); 
+		itemEntity.setOffered(false);
+		Claim claim = new Claim();
+		claim.setItem(itemEntity);
+		//Store claim with responding user
+		Optional<User> optionalUser = ur.findById(userid);
+		User user = optionalUser.get();
+		claim.setUser(user);
+		cr.save(claim);
+		changeClaimPending(claim.getId());
+		//Create a new chat
+		Chat chat = new Chat();
+		chat.setClaim(claim);
+		chr.save(chat);
+		if(chatContent.isBlank()==false) {
+			ccs.createChatContent(chatContent, chat.getId());				
+		}
 	}
 
 	public void changeClaimAccept(long itemid) {
