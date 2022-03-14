@@ -19,8 +19,8 @@ public class ChatService {
 		cr.save(chat);
 	}
 	
-//	public Chat findChat(long claimid) {
-//		return cr.findByClaimId(claimid);
-//	}
+	public Chat findChat(long claimid) {
+		return cr.findByClaimId(claimid);
+	}
 
 }

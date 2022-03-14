@@ -26,8 +26,8 @@ public class ChatEndpoint {
 		System.out.println("HTML works");
 	}
 	
-//	@GetMapping("/chat/{claimid}/getchat")
-//	public Chat getChatFromClaim(@PathVariable long claimid) {
-//		return cs.findChat(claimid);
-//	}
+	@GetMapping("/chat/{claimid}/getchat")
+	public Chat getChatFromClaim(@PathVariable long claimid) {
+		return cs.findChat(claimid);
+	}
 }
